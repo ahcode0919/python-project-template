@@ -26,6 +26,7 @@ ignore=CVS
 # regex matches against paths and can be in Posix or Windows format.
 ignore-paths=.python-version,
       LICENSE,
+      pytest.ini,
       README.md,
       requirements.txt,
       setup.cfg,
