@@ -1,4 +1,5 @@
-# Python Project Template
+# Python Project Template ![](https://github.com/ahcode0919/python-project-template/actions/workflows/ci.yml/badge.svg?branch=main)
+
 
 Baseline Python project template
 
