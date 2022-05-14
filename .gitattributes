@@ -1,2 +1,2 @@
-Dockerfile linguist-language=Python
-devcontainer.json linguist-language=Python
+.devcontainer/* -linguist-detectable
+.github/** -linguist-detectable
