@@ -1,0 +1,2 @@
+Dockerfile linguist-language=Python
+devcontainer.json linguist-language=Python
