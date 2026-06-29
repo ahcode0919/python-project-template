@@ -1,10 +1,6 @@
-"""
-Sample Python file
-"""
+"""Sample Python file"""
 
 
 def hello_world():
-    """
-    Prints hello world to console
-    """
+    """Prints hello world to console"""
     return "Hello World!"
