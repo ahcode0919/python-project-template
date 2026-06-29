@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "D"]  # Choose your rule categories
+ignore = ["D100", "D104", "D211", "D203", "D213", "D400", "D401", "D415"]
+extend-ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]  # Ignore docstring (D) errors in tests
+
+[tool.ruff.format]
+quote-style = "double"
