@@ -1,4 +1,7 @@
 lint:
-    ruff check . --fix && ruff format .
+    uv run ruff check . --fix
+    uv run ruff format .
+sync:
+    uv sync --all-groups
 test:
-    pytest
+    uv run pytest
