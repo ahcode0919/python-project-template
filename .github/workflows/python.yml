@@ -12,23 +12,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v6
       with:
         python-version: "3.14"
     - name: Setup just
       uses: extractions/setup-just@v3
-    - name: Install requirements
+    - name: Install uv
+      uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+      with:
+        enable-cache: true
+    - name: Setup environment
       run: |
-        python3 -m venv .venv
-        source .venv/bin/activate
-
-        python3 -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint project
+        just sync
+    - name: Lint
       run: |
-        source .venv/bin/activate
         just lint
-    - name: Run unit tests
+    - name: Unit tests
       run: |
-        source .venv/bin/activate
         just test
