@@ -2,5 +2,13 @@
     "editor.tabSize": 4,
     "files.autoSave": "afterDelay",
     "files.trimTrailingWhitespace": true,
-    "terminal.integrated.localEchoStyle": "dim"
+    "terminal.integrated.localEchoStyle": "dim",
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": "explicit",
+        "source.organizeImports.ruff": "explicit"
+    }
+  }
 }
