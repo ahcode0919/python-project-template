@@ -9,6 +9,7 @@ dependencies = []
 dev = [
     "codespell>=2.4.3",
     "pytest",
+    "pytest-cov",
     "ruff>=0.16.0",
 ]
 
