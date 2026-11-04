@@ -1,4 +1,4 @@
-# Python Project Template ![](https://github.com/ahcodedev/python-project-template/actions/workflows/ci.yml/badge.svg?branch=main)
+# Python Project Template ![](https://github.com/ahcodedev/python-project-template/actions/workflows/python.yml/badge.svg?branch=main)
 
 Baseline Python project template
 
