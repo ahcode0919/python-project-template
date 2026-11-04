@@ -1,0 +1,28 @@
+# CLAUDE.md
+
+Python project template using `uv` for environment/dependency management and `just` as the command runner.
+
+## Commands
+
+- `just sync` - install all dependency groups into `.venv`
+- `just lint` - type check (ty), lint + autofix (ruff), format (ruff), spell check (codespell)
+- `just ci-lint` - same checks without modifying files (used to verify, not fix)
+- `just test` - run pytest with coverage (fails under 98%)
+- `uv add <pkg>` / `uv add --dev <pkg>` - add a runtime / dev dependency (never edit `uv.lock` by hand)
+- `uv run example` - run the app entry point
+
+Run `just lint` and `just test` before considering a change done.
+
+## Layout
+
+- `src/example/` - the package (src layout, built with `uv_build`, installed editable by `uv sync`)
+- `src/example/__init__.py` - `main()` entry point, exposed as the `example` script
+- `tests/` - pytest tests; import the package as `from example.<module> import ...`
+- `prek.toml` - git hook config (`prek install` to enable)
+
+## Conventions
+
+- Python >= 3.14; ruff line length 100, double quotes
+- Docstrings required in `src/` (ruff `D` rules), not in `tests/`
+- Type hints on public functions; code must pass `ty check`
+- Renaming the project means updating `[project] name`, the `src/<name>/` folder, and `[project.scripts]` together
