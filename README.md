@@ -12,7 +12,7 @@ Project supports local development and VSCode Dev container development
 
 ### Local Development Installation
 
-Note: Project uses `uv` (0.13.x, enforced by `required-version` in `pyproject.toml`) and `just` to
+Note: Project uses `uv` and `just` to
 manage project configuration and commands
 
 * Install tools and sync the project - `just setup` (runs `brew bundle install`, then `just sync`)
@@ -24,9 +24,6 @@ manage project configuration and commands
 * Open project folder in VS Code
 * Install recommended extensions
 * Reopen in container using Remote Development Container menu
-
-The base image, `just`, and `uv` are pinned by version and digest in `.devcontainer/Dockerfile`
-and updated by Dependabot. To change the Python version, edit the `FROM` line.
 
 ## Project Commands
 
@@ -51,7 +48,7 @@ and updated by Dependabot. To change the Python version, edit the `FROM` line.
 | `release.yml`                                     | manual                       | publish a release                              |
 
 * GitHub Actions are pinned to full commit SHAs, with the version in a trailing comment
-* Dependabot (`.github/dependabot.yml`) checks weekly for updates to GitHub Actions, Python
+* Dependabot (`.github/dependabot.yml`) checks monthly for updates to GitHub Actions, Python
   dependencies, the dev container image, and dev container features. New releases wait 7 days
   before an update is proposed. Dependabot PRs get the `dependencies` label
 
