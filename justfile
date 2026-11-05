@@ -12,7 +12,14 @@ lint:
     uv run codespell
 prek:
     uv run prek
+set-github-labels:
+    ./scripts/sync-labels.sh
+setup:
+    brew bundle install
+    just sync
 sync:
     uv sync --all-groups
 test:
     uv run pytest
+zizmor:
+    zizmor . --collect all
