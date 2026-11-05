@@ -31,5 +31,12 @@ hooks = [
         language = "system",
         entry = "just test",
         pass_filenames = false
+    },
+    {
+        id = "git-leaks",
+        name = "git leaks",
+        language = "system",
+        entry = "gitleaks git --pre-commit --staged --redact",
+        pass_filenames = false
     }
 ]
