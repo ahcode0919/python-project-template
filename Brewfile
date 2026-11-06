@@ -1,4 +1,5 @@
 brew "gitleaks"
 brew "just"
+brew "markdownlint-cli2"
 brew "uv"
 brew "zizmor"

@@ -33,6 +33,30 @@ hooks = [
         pass_filenames = false
     },
     {
+        id = "docs-build",
+        name = "docs build",
+        language = "system",
+        entry = "just docs-build",
+        files = "^(docs/|src/|zensical\\.toml$)",
+        pass_filenames = false
+    },
+    {
+        id = "markdownlint",
+        name = "markdownlint",
+        language = "system",
+        entry = "just markdownlint",
+        files = "\\.md$",
+        pass_filenames = false
+    },
+    {
+        id = "pip-audit",
+        name = "pip-audit",
+        language = "system",
+        entry = "just audit",
+        files = "^(pyproject\\.toml|uv\\.lock)$",
+        pass_filenames = false
+    },
+    {
         id = "git-leaks",
         name = "git leaks",
         language = "system",
