@@ -35,11 +35,12 @@ manage project configuration and commands
 * `just audit` - check dependencies for known vulnerabilities with pip-audit
 * `just markdownlint` - lint Markdown files with markdownlint-cli2
 * `just docs-build` - build the docs site with Zensical (strict mode, output in `site/`)
-* `just docs-serve` - serve the docs locally with live reload (commented out in the `justfile`, uncomment to use)
+* `just docs-serve` - serve the docs locally with live reload
 * `just prek` - run pre-commit hooks via prek
 * `just git-leaks` - scan staged changes for secrets with gitleaks
 * `just zizmor` - audit GitHub Actions workflows for security issues
-* `just set-github-labels` - create or update the release labels on GitHub (requires `gh auth login`)
+* `just set-github-labels` - remove GitHub's non-release default labels, then create or update the release labels
+  (for fresh repos, requires `gh auth login`)
 * `uv add {package}` - install a dependency
 
 ## CI and Security
@@ -64,7 +65,7 @@ which reads the **release labels** on merged pull requests.
 A release label is a GitHub label added to the pull request itself, from the **Labels** section
 of the PR sidebar. Release Drafter only reads these labels. Commit messages and PR titles are not
 parsed, so prefixes like `feat:` or `fix:` have no effect. Only the labels below count as release
-labels; other repository labels (e.g. `good first issue`, `question`) are ignored.
+labels; any other repository labels you add are ignored.
 
 | Release label                                                     | Version bump | Release notes section |
 | ----------------------------------------------------------------- | ------------ | --------------------- |
