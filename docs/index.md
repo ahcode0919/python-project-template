@@ -1,0 +1,7 @@
+# example
+
+Baseline Python project template.
+
+* Build the docs with `just docs-build`
+* Add pages under `docs/` and list them in `nav` in `zensical.toml`
+* See the [API Reference](reference.md) for documentation generated from docstrings

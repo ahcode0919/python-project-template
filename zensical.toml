@@ -1,0 +1,41 @@
+# Configuration file for Zensical, a static site generator for project documentation.
+# See https://zensical.org/docs/ for more information.
+
+[project]
+site_name = "example"
+site_description = "example"
+nav = [
+  { "Home" = "index.md" },
+  { "API Reference" = "reference.md" },
+]
+
+[project.theme]
+language = "en"
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.top",
+  "search.highlight",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.markdown_extensions]
+admonition = {}
+toc.permalink = true
+pymdownx.highlight = {}
+pymdownx.superfences = {}
+
+# Generate API reference pages from docstrings with `::: module.path` blocks
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]

@@ -6,12 +6,18 @@ Python project template using `uv` for environment/dependency management and `ju
 
 - `just setup` - install Homebrew tools (`Brewfile`) and sync the project
 - `just sync` - install all dependency groups into `.venv`
-- `just lint` - type check (ty), lint + autofix (ruff), format (ruff), spell check (codespell)
+- `just lint` - type check (ty), lint + autofix (ruff), format (ruff), spell check (codespell),
+  workflow lint (actionlint)
 - `just ci-lint` - same checks without modifying files (used to verify, not fix)
 - `just test` - run pytest with coverage (fails under 98%)
+- `just audit` - check dependencies for known vulnerabilities (pip-audit)
+- `just markdownlint` - lint Markdown files (markdownlint-cli2, config in `.markdownlint-cli2.jsonc`)
+- `just docs-build` - build the docs with Zensical in strict mode (`zensical.toml`, pages in `docs/`)
+- `just docs-serve` - serve the docs locally with live reload
 - `just zizmor` - audit GitHub Actions workflows for security issues
 - `just git-leaks` - scan staged changes for secrets
-- `just set-github-labels` - create/update the release labels on GitHub (`scripts/sync-labels.sh`, needs `gh`)
+- `just set-github-labels` - remove non-release default labels, then create/update the release labels on GitHub
+  (`scripts/sync-labels.sh`, needs `gh`, for fresh repos)
 - `uv add <pkg>` / `uv add --dev <pkg>` - add a runtime / dev dependency (never edit `uv.lock` by hand)
 - `uv run example` - run the app entry point
 
@@ -23,7 +29,8 @@ Run `just lint` and `just test` before considering a change done.
 - `src/example/__init__.py` - `main()` entry point, exposed as the `example` script
 - `tests/` - pytest tests; import the package as `from example.<module> import ...`
 - `prek.toml` - git hook config (`prek install` to enable)
-- `.github/workflows/` - `python.yml` (lint + tests), `security.yml` (zizmor, gitleaks),
+- `.github/workflows/` - `python.yml` (lint, tests, docs build, markdownlint),
+  `security.yml` (zizmor, gitleaks, pip-audit),
   `release-drafter.yml` (draft release, PR labels), `release.yml` (manual release)
 - `.github/release-drafter.yml` - release label → version bump / release notes section mapping
 - `.github/dependabot.yml` - weekly updates for actions, uv, dev container image and features

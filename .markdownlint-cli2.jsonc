@@ -1,6 +1,15 @@
 {
+  // Rule configuration
+  "config": {
+    // Line length
+    "MD013": {
+      "line_length": 120
+    }
+  },
   // Files excluded from markdown linting (glob syntax)
   "ignores": [
-    ".github/pull_request_template.md"
+    ".github/pull_request_template.md",
+    ".venv/**",
+    "site/**"
   ]
 }
