@@ -15,6 +15,11 @@ _exclude:
   - "{% if _copier_operation == 'update' %}src/*/hello_world.py{% endif %}"
   - "{% if _copier_operation == 'update' %}tests/test_hello_world.py{% endif %}"
   - "{% if _copier_operation == 'update' %}scripts/sync-labels.sh{% endif %}"
+  - "{% if _copier_operation == 'update' %}/docs{% endif %}"
+  - "{% if _copier_operation == 'update' %}zensical.toml{% endif %}"
+  - "{% if _copier_operation == 'update' %}.github/release-drafter.yml{% endif %}"
+  - "{% if _copier_operation == 'update' %}.github/workflows/release-drafter.yml{% endif %}"
+  - "{% if _copier_operation == 'update' %}.github/workflows/release.yml{% endif %}"
 _tasks:
   - uv lock
 
