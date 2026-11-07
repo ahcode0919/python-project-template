@@ -1,11 +1,15 @@
-# Dependabot configuration.
+# Dependabot configuration for the template repository.
 # See https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+#
+# Python dependencies are not listed: template/pyproject.toml.jinja is a Copier template that
+# Dependabot can't parse. New projects resolve the latest versions with `uv lock`, and generated
+# projects get their own uv Dependabot entry from template/.github/dependabot.yml.
 version: 2
 
 updates:
-  # GitHub Actions used in .github/workflows (updates SHA pins and their version comments)
+  # GitHub Actions used by the template repo and by generated projects
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories: ["/", "/template"]
     schedule:
       interval: "monthly"
     cooldown:
@@ -15,30 +19,18 @@ updates:
       github-actions:
         patterns: ["*"]
 
-  # Python dependencies in pyproject.toml / uv.lock
-  - package-ecosystem: "uv"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    cooldown:
-      default-days: 7
-    labels: ["dependencies"]
-    groups:
-      python-minor-and-patch:
-        update-types: ["minor", "patch"]
-
-  # Base image in .devcontainer/Dockerfile
+  # Base image in template/.devcontainer/Dockerfile
   - package-ecosystem: "docker"
-    directory: "/.devcontainer"
+    directory: "/template/.devcontainer"
     schedule:
       interval: "monthly"
     cooldown:
       default-days: 7
     labels: ["dependencies"]
 
-  # Features in .devcontainer/devcontainer.json
+  # Features in template/.devcontainer/devcontainer.json
   - package-ecosystem: "devcontainers"
-    directory: "/"
+    directory: "/template"
     schedule:
       interval: "monthly"
     cooldown:

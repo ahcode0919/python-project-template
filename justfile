@@ -1,52 +1,36 @@
+rendered := "_rendered/demo-project"
+
 # List available recipes
 [private]
 default:
     @just --list
-# Check dependencies for known vulnerabilities (pip-audit)
-audit:
-    uv run pip-audit --skip-editable
-# Type check, lint, format check, spell check, and lint workflows without changing files
-ci-lint:
-    uv run ty check
-    uv run ruff check .
-    uv run ruff format --check .
-    uv run codespell
-    uv run actionlint
-# Build the docs in strict mode (output in site/)
-docs-build:
-    uv run zensical build --strict
-# Serve the docs locally with live reload
-docs-serve:
-    uv run zensical serve
+# Lint the template repo and template GitHub workflows
+actionlint:
+    actionlint .github/workflows/*.yml template/.github/workflows/*.yml
 # Scan staged changes for secrets
 git-leaks:
     gitleaks git --pre-commit --staged --redact
-# Type check, lint, format, spell check, and lint workflows, applying fixes
-lint:
-    uv run ty check
-    uv run ruff check . --fix
-    uv run ruff format .
-    uv run codespell
-    uv run actionlint
-# Lint Markdown files
-markdownlint:
-    markdownlint-cli2 "**/*.md"
 # Run the git hooks on staged files
 prek:
-    uv run prek
-# Remove non-release default labels and sync the release labels on GitHub
-set-github-labels:
-    ./scripts/sync-labels.sh
-# Install Homebrew tools and sync the project
+    prek
+# Render a demo project from the current template (includes uncommitted changes)
+render:
+    rm -rf {{ rendered }}
+    uvx copier copy --trust --defaults --vcs-ref HEAD \
+        --data project_name=demo-project \
+        --data github_repo=example-owner/demo-project \
+        . {{ rendered }}
+# Install Homebrew tools from the Brewfile
 setup:
     brew bundle install
-    just sync
-# Install all dependency groups into .venv
-sync:
-    uv sync --all-groups
-# Run unit tests with coverage
-test:
-    uv run pytest
-# Audit GitHub Actions workflows for security issues
+# Render a demo project and run its lint, tests, docs build, dependency audit, and workflow audit
+check: render
+    cd {{ rendered }} && just sync
+    cd {{ rendered }} && just ci-lint
+    cd {{ rendered }} && just test
+    cd {{ rendered }} && just docs-build
+    cd {{ rendered }} && just audit
+    cd {{ rendered }} && uvx zizmor --offline .
+# Audit the template repo and template GitHub workflows for security issues
 zizmor:
-    zizmor . --collect all
+    zizmor . template --collect all

@@ -1,0 +1,3 @@
+# Directories prek skips when discovering nested projects (gitignore syntax).
+# template/prek.toml is for generated projects; its hooks can't run on the unrendered template.
+template/

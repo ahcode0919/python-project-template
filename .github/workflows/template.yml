@@ -1,0 +1,56 @@
+name: Template Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions: {}
+
+jobs:
+  actionlint:
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - name: Install uv
+      uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      with:
+        enable-cache: false
+        version: ">=0.13,<0.14"
+    - name: Install just and actionlint
+      run: |
+        uv tool install rust-just
+        uv tool install actionlint-py
+    - name: Lint workflows
+      run: |
+        just actionlint
+  render-and-check:
+    # ubuntu-latest includes Node, which markdownlint-cli2 needs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - name: Install uv
+      uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      with:
+        enable-cache: false
+        version: ">=0.13,<0.14"
+    - name: Install just
+      run: |
+        uv tool install rust-just
+    - name: Render a project and run its checks
+      run: |
+        just check
+    # Same markdownlint-cli2 version as the VS Code markdownlint extension
+    - name: Markdownlint
+      working-directory: _rendered/demo-project
+      run: |
+        npx --yes markdownlint-cli2@0.23.2 "**/*.md"

@@ -1,0 +1,29 @@
+# Copier configuration for this template.
+# See https://copier.readthedocs.io/en/stable/configuring/ for more information.
+_min_copier_version: "9.0"
+_subdirectory: template
+# Only *.jinja files are rendered, so `${{ }}` in GitHub workflows is left untouched
+_templates_suffix: .jinja
+_tasks:
+  - uv lock
+
+project_name:
+  type: str
+  help: Project name (used in pyproject.toml and the docs title)
+  validator: "{% if not project_name %}Required{% endif %}"
+
+package_name:
+  type: str
+  help: Python package name (the folder under src/)
+  default: "{{ project_name | lower | replace('-', '_') | replace(' ', '_') }}"
+  validator: "{% if not package_name.isidentifier() %}Must be a valid Python identifier{% endif %}"
+
+description:
+  type: str
+  help: Short project description
+  default: "{{ project_name }}"
+
+github_repo:
+  type: str
+  help: GitHub owner/repo (used for the README badges)
+  validator: "{% if github_repo.count('/') != 1 %}Use the owner/repo format{% endif %}"
