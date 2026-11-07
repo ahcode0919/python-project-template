@@ -1,89 +1,91 @@
 # Python Project Template
 
-[![CI](https://github.com/ahcodedev/python-project-template/actions/workflows/python.yml/badge.svg?branch=main)](https://github.com/ahcodedev/python-project-template/actions/workflows/python.yml)
+[![Template Checks](https://github.com/ahcodedev/python-project-template/actions/workflows/template.yml/badge.svg?branch=main)](https://github.com/ahcodedev/python-project-template/actions/workflows/template.yml)
 [![Security](https://github.com/ahcodedev/python-project-template/actions/workflows/security.yml/badge.svg?branch=main)](https://github.com/ahcodedev/python-project-template/actions/workflows/security.yml)
-[![gitleaks](https://img.shields.io/badge/protected%20by-gitleaks-blue)](https://github.com/gitleaks/gitleaks)
 
-Baseline Python project template
+A [Copier](https://copier.readthedocs.io/) template for Python projects. Projects created from it can pull in later
+template changes with `copier update`.
 
-## Setup
+## What's included
 
-Project supports local development and VSCode Dev container development
+* `uv` for dependencies and `just` as the command runner
+* ruff, ty, codespell, actionlint, and markdownlint for linting
+* pytest with coverage, Zensical docs with an API reference generated from docstrings
+* pip-audit, gitleaks, and zizmor for security checks
+* prek git hooks, GitHub Actions CI, Dependabot, Release Drafter, and a release workflow
+* A VS Code dev container
 
-### Local Development Installation
+See [template/README.md.jinja](template/README.md.jinja) for the commands and workflows a generated project gets.
 
-Note: Project uses `uv` and `just` to
-manage project configuration and commands
+## Create a project
 
-* Install tools and sync the project - `just setup` (runs `brew bundle install`, then `just sync`)
+Requires [uv](https://docs.astral.sh/uv/). Copier asks for the project name, package name, description, and GitHub
+`owner/repo`.
 
-### VS Code Dev Container
+```bash
+uvx copier copy --trust gh:ahcodedev/python-project-template my-project
+```
 
-* Install Docker
-* Install VSCode
-* Open project folder in VS Code
-* Install recommended extensions
-* Reopen in container using Remote Development Container menu
+`--trust` lets Copier run the template's post-create task (`uv lock`). New projects use the latest template release.
 
-## Project Commands
+## Update a project
 
-* `just setup` - install Homebrew tools from the `Brewfile` and sync the project
-* `just sync` - sync project dependencies (all groups)
-* `just lint` - type check, lint, format, spellcheck, and lint workflows (actionlint) (applies fixes)
-* `just ci-lint` - run the same checks without modifying files (used in CI)
-* `just test` - run unit tests
-* `just audit` - check dependencies for known vulnerabilities with pip-audit
-* `just markdownlint` - lint Markdown files with markdownlint-cli2
-* `just docs-build` - build the docs site with Zensical (strict mode, output in `site/`)
-* `just docs-serve` - serve the docs locally with live reload
-* `just prek` - run pre-commit hooks via prek
+From the project folder, with a clean git working tree:
+
+```bash
+uvx copier update --trust
+```
+
+Copier compares the template release the project was created from (`_commit` in `.copier-answers.yml`) with the
+latest release and applies only the template's changes, keeping your edits. Conflicts are marked for you to resolve,
+like a git merge. Don't edit `.copier-answers.yml` by hand after it's created.
+
+## Adopt Copier in an existing project
+
+Projects created before the template used Copier have no `.copier-answers.yml`. To connect one:
+
+1. Add `.copier-answers.yml` to the project root with the project's real values. `_commit` must be `v1.0.0` (or a
+   later release), the first release with Copier support:
+
+   ```yaml
+   # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+   _commit: v1.0.0
+   _src_path: gh:ahcodedev/python-project-template
+   description: My project
+   github_repo: someone/my-project
+   package_name: my_project
+   project_name: my-project
+   ```
+
+   `package_name` must match the project's `src/<package>/` folder.
+
+2. Optional catch-up: Copier now assumes the project matches `v1.0.0`. To pick up template changes the project
+   missed before that, run `uvx copier recopy --trust --vcs-ref v1.0.0` on a clean working tree, review `git diff`,
+   and keep what you want.
+3. Commit. From then on, `uvx copier update --trust` works as usual.
+
+## Maintaining the template
+
+* `copier.yml` - template questions and settings
+* `template/` - the files copied into new projects. Only files ending in `.jinja` are rendered (the suffix is
+  removed), so GitHub Actions `${{ }}` expressions in other files are left alone. Folder names can use placeholders
+  too (`template/src/{{ package_name }}/`)
+* `.github/` - CI, security, and release workflows for this template repository
+* `prek.toml` - git hooks for this repository (`prek install` to enable)
+
+Commands (requires `uv` and `just`; install `just` with `brew install just`, then run `just setup`):
+
+* `just setup` - install Homebrew tools from the `Brewfile`
+* `just render` - render a demo project into `_rendered/demo-project` from the current template, including
+  uncommitted changes
+* `just check` - render the demo project and run its lint, tests, docs build, pip-audit, and zizmor (used in CI)
+* `just actionlint` - lint the root and template GitHub workflows
+* `just zizmor` - audit the root and template GitHub workflows for security issues
 * `just git-leaks` - scan staged changes for secrets with gitleaks
-* `just zizmor` - audit GitHub Actions workflows for security issues
-* `just set-github-labels` - remove GitHub's non-release default labels, then create or update the release labels
-  (for fresh repos, requires `gh auth login`)
-* `uv add {package}` - install a dependency
+* `just prek` - run the git hooks on staged files
 
-## CI and Security
+### Releases
 
-| Workflow              | Runs on                 | Purpose                                      |
-| --------------------- | ----------------------- | -------------------------------------------- |
-| `python.yml`          | push / PR to `main`     | lint, unit tests, docs build, markdownlint   |
-| `security.yml`        | push to `main`, all PRs | zizmor, gitleaks, pip-audit dependency audit |
-| `release-drafter.yml` | push to `main`, PRs     | update the draft release, label PRs          |
-| `release.yml`         | manual                  | publish a release                            |
-
-* GitHub Actions are pinned to full commit SHAs, with the version in a trailing comment
-* Dependabot (`.github/dependabot.yml`) checks monthly for updates to GitHub Actions, Python
-  dependencies, the dev container image, and dev container features. New releases wait 7 days
-  before an update is proposed. Dependabot PRs get the `dependencies` label
-
-## Releases
-
-Releases are managed with [Release Drafter](https://github.com/release-drafter/release-drafter),
-which reads the **release labels** on merged pull requests.
-
-A release label is a GitHub label added to the pull request itself, from the **Labels** section
-of the PR sidebar. Release Drafter only reads these labels. Commit messages and PR titles are not
-parsed, so prefixes like `feat:` or `fix:` have no effect. Only the labels below count as release
-labels; any other repository labels you add are ignored.
-
-| Release label                                                     | Version bump | Release notes section |
-| ----------------------------------------------------------------- | ------------ | --------------------- |
-| `breaking`                                                        | major        | Breaking Changes      |
-| `feature`, `enhancement`                                          | minor        | Features              |
-| `bug`, `fix`                                                      | patch        | Bug Fixes             |
-| `chore`, `ci`, `dependencies`, `documentation`, `refactor`        | patch        | Maintenance           |
-| `skip-changelog`                                                  | none         | Excluded              |
-
-* Every PR must have at least one release label, or the `Release Drafter / require-label` check fails. If a release
-  has PRs with different labels, the largest bump wins
-* Release labels are added automatically from the PR's branch name prefix (`feat/`, `fix/`, `chore/`,
-  `ci/`, `docs/`, `refactor/`) and from the files it changes. You can add or change them by hand
-* Run `just set-github-labels` once to create the release labels in the GitHub repository
-* Merging to `main` updates a draft GitHub Release with the next version and notes
-* To release, run the **Release** workflow from the Actions tab. It bumps the version in
-  `pyproject.toml`/`uv.lock`, updates `CHANGELOG.md`, tags the release, and uploads build artifacts
-
-## Usage
-
-* Usage Notes
+Template releases use the same label-based Release Drafter flow as generated projects (see the Releases section of
+[template/README.md.jinja](template/README.md.jinja)). The Release workflow publishes the draft and tags it `vX.Y.Z`.
+Copier uses these tags as template versions, so changes merged to `main` reach projects only after a release.

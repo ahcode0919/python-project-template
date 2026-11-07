@@ -1,5 +1,7 @@
+brew "actionlint"
 brew "gitleaks"
 brew "just"
 brew "markdownlint-cli2"
+brew "prek"
 brew "uv"
 brew "zizmor"

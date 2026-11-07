@@ -1,6 +1,8 @@
 # CLAUDE.md
 
-Python project template using `uv` for environment/dependency management and `just` as the command runner.
+{{ description }}
+
+Uses `uv` for environment/dependency management and `just` as the command runner.
 
 ## Commands
 
@@ -19,15 +21,15 @@ Python project template using `uv` for environment/dependency management and `ju
 - `just set-github-labels` - remove non-release default labels, then create/update the release labels on GitHub
   (`scripts/sync-labels.sh`, needs `gh`, for fresh repos)
 - `uv add <pkg>` / `uv add --dev <pkg>` - add a runtime / dev dependency (never edit `uv.lock` by hand)
-- `uv run example` - run the app entry point
+- `uv run {{ project_name }}` - run the app entry point
 
 Run `just lint` and `just test` before considering a change done.
 
 ## Layout
 
-- `src/example/` - the package (src layout, built with `uv_build`, installed editable by `uv sync`)
-- `src/example/__init__.py` - `main()` entry point, exposed as the `example` script
-- `tests/` - pytest tests; import the package as `from example.<module> import ...`
+- `src/{{ package_name }}/` - the package (src layout, built with `uv_build`, installed editable by `uv sync`)
+- `src/{{ package_name }}/__init__.py` - `main()` entry point, exposed as the `{{ project_name }}` script
+- `tests/` - pytest tests; import the package as `from {{ package_name }}.<module> import ...`
 - `prek.toml` - git hook config (`prek install` to enable)
 - `.github/workflows/` - `python.yml` (lint, tests, docs build, markdownlint),
   `security.yml` (zizmor, gitleaks, pip-audit),
@@ -54,6 +56,6 @@ Run `just lint` and `just test` before considering a change done.
 - uv is pinned to 0.13.x in four places that must stay in sync: `[tool.uv] required-version` and the
   `uv_build` requirement in `pyproject.toml`, `setup-uv` `version` in the workflows, and the uv image in
   `.devcontainer/Dockerfile`
-- Do not edit `CHANGELOG.md` or bump `[project] version` by hand; the Release workflow does both
+- Do not bump `[project] version` by hand; the Release workflow does it
 - Every PR needs a release label (GitHub PR label, not a title/commit prefix): `breaking`, `feature`,
   `enhancement`, `bug`, `fix`, `chore`, `ci`, `dependencies`, `documentation`, `refactor`, or `skip-changelog`
