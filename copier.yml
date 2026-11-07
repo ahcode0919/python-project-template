@@ -1,9 +1,20 @@
 # Copier configuration for this template.
 # See https://copier.readthedocs.io/en/stable/configuring/ for more information.
-_min_copier_version: "9.0"
+_min_copier_version: "9.5"
 _subdirectory: template
 # Only *.jinja files are rendered, so `${{ }}` in GitHub workflows is left untouched
 _templates_suffix: .jinja
+_exclude:
+  # Defaults; setting _exclude replaces them, so re-add the ones you want
+  - "~*"
+  - "*.py[co]"
+  - "__pycache__"
+  - ".git"
+  - ".DS_Store"
+  # Example code is only added on `copier copy`; `copier update` never adds it back
+  - "{% if _copier_operation == 'update' %}src/*/hello_world.py{% endif %}"
+  - "{% if _copier_operation == 'update' %}tests/test_hello_world.py{% endif %}"
+  - "{% if _copier_operation == 'update' %}scripts/sync-labels.sh{% endif %}"
 _tasks:
   - uv lock
 
